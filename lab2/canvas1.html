@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- ανοίγουμε script μεσα στο αρχείο html για να  γράψουμε κώδικα σε javascript -->
+		<script>
+			window.onload = function () {
+				// απο το body του html παίρνουμε τον καμβά με id myCanvas
+				var canvas = document.getElementById('myCanvas');
+				// δηλώνουμε το context του καμβά σε 2d
+				var context = canvas.getContext('2d');
+
+				// παίρνουμε την εικόνα απο το body του html με id myImg
+				var imageObj = document.getElementById('myImg');
+				// δηλώνουμε το width και height της εικόνας
+				var sourceWidth = imageObj.width;
+				var sourceHeight = imageObj.height;
+				// υπολογίζουμε τις συντεταγμένες για να κεντράρουμε την εικόνα στον καμβά
+				var sourceX = canvas.width / 2 - sourceWidth / 2;
+				var sourceY = canvas.height / 2 - sourceHeight / 2;
+				// οι συντεταγμένες προορισμού είναι ίδιες με τις συντεταγμένες πηγής
+				var destX = sourceX;
+				var destY = sourceY;
+
+				// σχεδιάζουμε την εικόνα στον καμβά
+				context.drawImage(imageObj, destX, destY);
+
+				// παίρνουμε τα δεδομένα της εικόνας απο τον καμβά δηλαδή τα pixels
+				var imageData = context.getImageData(sourceX, sourceY, sourceWidth, sourceHeight);
+				// τα δεδομένα της εικόνας είναι σε μορφή πίνακα
+				var data = imageData.data;
+
+				// σε αυτη τη λουπα θα επεξεργαστούμε τα pixels της εικόνας
+				for (var i = 0; i < data.length; i += 4) {
+					// με την εντολη data[i] παιρνουμε το κοκκινο, με την data[1+i] το πρασινο και με την data[i+2] το μπλε
+					// αρα αν κανουμε αφαιρεση απο 255 αυτην την τιμη θα παρουμε το συμπληρωματικο χρωμα
+					data[i] = 255 - data[i]; // red
+					data[i + 1] = 255 - data[i + 1]; // green
+					data[i + 2] = 255 - data[i + 2]; // blue
+					// i+3 is alpha (the fourth element)
+				}
+				// επανατοποθετούμε τα επεξεργασμένα δεδομένα πίσω στον καμβά
+				context.putImageData(imageData, destX, destY);
+			};
+		</script>
+	</head>
+	<body>
+		<!-- φορτώνουμε την εικόνα με id myImg στην σελιδα μας -->
+		<img id="myImg" src="./img.jpg" alt="sima" width="108" height="66" hidden />
+		<!-- φορτώνουμε τον καμβα στην σελιδα μας -->
+		<canvas id="myCanvas" width="600" height="250" style="border: 1px solid black"> </canvas>
+	</body>
+</html>

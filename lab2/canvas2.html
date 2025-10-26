@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<!-- ανοίγουμε script μεσα στο αρχείο html για να  γράψουμε κώδικα σε javascript -->
+		<script>
+			window.onload = function () {
+				// απο το body του html παίρνουμε τον καμβά με id myCanvas
+				var canvas = document.getElementById('myCanvas');
+				// δηλώνουμε το context του καμβά σε 2d
+				var context = canvas.getContext('2d');
+
+				// δημιουργούμε ένα νέο αντικείμενο εικόνας
+				var imageObj = new Image();
+				// όταν η εικόνα φορτωθεί εκτελούμε την συνάρτηση
+				imageObj.onload = function () {
+					// δηλώνουμε το width και height της εικόνας
+					var sourceWidth = this.width;
+					var sourceHeight = this.height;
+					// υπολογίζουμε τις συντεταγμένες για να κεντράρουμε την εικόνα στον καμβά
+					var sourceX = canvas.width / 2 - sourceWidth / 2;
+					var sourceY = canvas.height / 2 - sourceHeight / 2;
+					// οι συντεταγμένες προορισμού είναι ίδιες με τις συντεταγμένες πηγής
+					var destX = sourceX;
+					var destY = sourceY;
+
+					// σχεδιάζουμε την εικόνα στον καμβά
+					context.drawImage(this, destX, destY);
+
+					// παίρνουμε τα δεδομένα της εικόνας απο τον καμβά δηλαδή τα pixels
+					var imageData = context.getImageData(sourceX, sourceY, sourceWidth, sourceHeight);
+					// τα δεδομένα της εικόνας είναι σε μορφή πίνακα
+					var data = imageData.data;
+
+					// επεξεργασζόμαστε τα pixels της εικόνας
+					for (var i = 0; i < data.length; i += 4) {
+						// με την εντολη data[i] παιρνουμε το κοκκινο, με την data[1+i] το πρασινο και με την data[i+2] το μπλε
+						// αρα αν κανουμε αφαιρεση απο 255 αυτην την τιμη θα παρουμε το συμπληρωματικο χρωμα
+						data[i] = 255 - data[i]; // red
+						data[i + 1] = 255 - data[i + 1]; // green
+						data[i + 2] = 255 - data[i + 2]; // blue
+						// i+3 is alpha (the fourth element)
+					}
+
+					// overwrite original image with
+					// new image data
+					// επανατοποθετούμε τα επεξεργασμένα δεδομένα πίσω στον καμβά
+					context.putImageData(imageData, destX, destY);
+				};
+				// παιρνουμε την εικονα απο το αρχειο img.jpg
+				imageObj.src = './img.jpg';
+			};
+		</script>
+	</head>
+	<body>
+		<!-- φορτώνουμε τον καμβα στην σελίδα μας -->
+		<canvas id="myCanvas" width="600" height="250" style="border: 1px solid black"> </canvas>
+	</body>
+</html>
