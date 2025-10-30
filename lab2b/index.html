@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Anna Zoi - TH20179</title>
+		<style>
+			body {
+				background: black;
+				margin: 0 auto;
+				text-align: center;
+			}
+			div {
+				margin: 10px;
+				padding: 10px;
+			}
+			video,
+			#c1,
+			#c2 {
+				max-width: 700px;
+				height: auto;
+			}
+		</style>
+		<script src="main.js"></script>
+	</head>
+
+	<body onload="processor.doLoad()">
+		<div>
+			<!-- Βίντεο με πράσινο φόντο  -->
+			<video id="video" src="myvideo_green.mp4" controls></video>
+		</div>
+		<div>
+			<!-- c1 → επεξεργασία frame -->
+			<canvas id="c1" width="320" height="180"></canvas>
+			<!-- c2 → τελικό αποτέλεσμα chroma key  -->
+			<canvas id="c2" width="320" height="180"></canvas>
+		</div>
+	</body>
+</html>
