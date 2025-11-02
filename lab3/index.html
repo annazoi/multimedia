@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="el">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Anna Zoi - Th20179</title>
+
+		<script>
+			window.onload = function () {
+				let canvas = document.getElementById('myCanvas');
+				let ctx = canvas.getContext('2d');
+
+				let img1 = new Image();
+				let img2 = new Image();
+
+				img1.src = './blue.jpg';
+				img2.src = './red.jpg';
+
+				let loaded = 0;
+
+				function onImageLoad() {
+					loaded++;
+					if (loaded === 2) {
+						drawAndBlend();
+					}
+				}
+
+				img1.onload = onImageLoad;
+				img2.onload = onImageLoad;
+
+				function drawAndBlend() {
+					// Σχεδιάζουμε τις εικόνες στον καμβά
+					ctx.drawImage(img1, 0, 0, canvas.width, canvas.height);
+					let imgData1 = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+					ctx.drawImage(img2, 0, 0, canvas.width, canvas.height);
+					let imgData2 = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+					let data1 = imgData1.data;
+					let data2 = imgData2.data;
+
+					// Blend: (R1+R2)/2, (G1+G2)/2, (B1+B2)/2
+					for (let i = 0; i < data1.length; i += 4) {
+						data1[i] = (data1[i] + data2[i]) / 2; // R
+						data1[i + 1] = (data1[i + 1] + data2[i + 1]) / 2; // G
+						data1[i + 2] = (data1[i + 2] + data2[i + 2]) / 2; // B
+						// data1[i+3] είναι α (alpha), δεν αλλάζουμε
+					}
+
+					ctx.putImageData(imgData1, 0, 0);
+				}
+			};
+		</script>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="400"></canvas>
+	</body>
+</html>
