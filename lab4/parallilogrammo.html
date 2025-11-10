@@ -16,44 +16,33 @@
 
 			let scale = 1;
 			let growing = true;
-			let lastTime = 0;
-			// πόσο χρόνο θα πάρει από το μικρό στο μεγάλο
-			const duration = 2000;
 
-			function animate(time) {
-				if (!lastTime) lastTime = time;
-				const delta = time - lastTime;
-				lastTime = time;
-
-				// Υπολογισμός του πόσο θα αλλάξει το scale ανάλογα με τον χρόνο
-				const scaleChangePerMs = (2 - 0.5) / duration;
-				if (growing) {
-					scale += scaleChangePerMs * delta;
-					if (scale >= 2) {
-						scale = 2;
-						growing = false;
-					}
-				} else {
-					scale -= scaleChangePerMs * delta;
-					if (scale <= 0.5) {
-						scale = 0.5;
-						growing = true;
-					}
-				}
-
+			function animate() {
+				// καθαρισμός
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 				ctx.save();
+				// κέντρο καμβά
 				ctx.translate(canvas.width / 2, canvas.height / 2);
 				ctx.scale(scale, scale);
 				ctx.fillStyle = 'pink';
+				// κεντραρισμένο παραλληλόγραμμο
 				ctx.fillRect(-50, -25, 100, 50);
 				ctx.restore();
+
+				// αλλαγή μεγέθους
+				if (growing) {
+					scale += 0.05;
+					if (scale >= 2) growing = false;
+				} else {
+					scale -= 0.05;
+					if (scale <= 0.5) growing = true;
+				}
 
 				requestAnimationFrame(animate);
 			}
 
-			requestAnimationFrame(animate);
+			animate();
 		</script>
 	</body>
 </html>
