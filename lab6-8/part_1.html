@@ -1,0 +1,45 @@
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<script src="https://www.x3dom.org/download/x3dom.js"></script>
+		<link rel="stylesheet" href="https://www.x3dom.org/download/x3dom.css" />
+	</head>
+
+	<body>
+		<x3d width="100%" height="100%">
+			<scene>
+				<transform DEF="ball">
+					<shape>
+						<appearance>
+							<material diffuseColor="1 0 0"></material>
+						</appearance>
+						<sphere></sphere>
+					</shape>
+				</transform>
+
+				<!-- χρονισμός 10 sec -->
+				<TimeSensor DEF="time" cycleInterval="10" loop="true"></TimeSensor>
+
+				<!-- 6 keyframes -->
+				<PositionInterpolator
+					DEF="move"
+					key="0 0.2 0.4 0.6 0.8 1"
+					keyValue="
+                0 0 0
+                0 3 0
+                3 3 0
+                3 0 0
+                0 0 3
+                0 0 0"
+				>
+				</PositionInterpolator>
+
+				<!-- σύνδεση timer → interpolator -->
+				<Route fromNode="time" fromField="fraction_changed" toNode="move" toField="set_fraction"></Route>
+
+				<!-- σύνδεση interpolator → transform -->
+				<Route fromNode="move" fromField="value_changed" toNode="ball" toField="translation"></Route>
+			</scene>
+		</x3d>
+	</body>
+</html>
