@@ -17,7 +17,7 @@
 					</shape>
 				</transform>
 
-				<!-- χρονισμός 10 sec -->
+				<!-- 10 sec -->
 				<TimeSensor DEF="time" cycleInterval="10" loop="true"></TimeSensor>
 
 				<!-- 6 keyframes -->
@@ -34,10 +34,10 @@
 				>
 				</PositionInterpolator>
 
-				<!-- σύνδεση timer → interpolator -->
+				<!-- σύνδεση timer, interpolator -->
 				<Route fromNode="time" fromField="fraction_changed" toNode="move" toField="set_fraction"></Route>
 
-				<!-- σύνδεση interpolator → transform -->
+				<!-- σύνδεση interpolator, transform -->
 				<Route fromNode="move" fromField="value_changed" toNode="ball" toField="translation"></Route>
 			</scene>
 		</x3d>
