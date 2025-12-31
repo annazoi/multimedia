@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="el">
+	<head>
+		<meta charset="utf-8" />
+		<title>Εργαστηριακή Άσκηση 9 - X3DOM</title>
+
+		<script src="https://www.x3dom.org/download/x3dom.js"></script>
+		<link rel="stylesheet" href="https://www.x3dom.org/download/x3dom.css" />
+
+		<style>
+			body {
+				font-family: Arial;
+			}
+			.section {
+				margin-bottom: 40px;
+			}
+		</style>
+
+		<script>
+			function pickContinent(event) {
+				let y = event.hitPnt[1];
+				let result = '';
+
+				if (y > 1) result = 'Ευρώπη / Βόρεια Αμερική';
+				else if (y > 0) result = 'Αφρική';
+				else result = 'Νότια Αμερική / Αυστραλία';
+
+				document.getElementById('continent').innerHTML = result;
+			}
+		</script>
+	</head>
+
+	<body>
+		<h1>Εργαστηριακή Άσκηση 9 – X3DOM</h1>
+
+		<!-- ===================================================== -->
+		<div class="section">
+			<h2>Μέρος 1: Σφαίρα → Κίνηση Κύβου (Video Texture)</h2>
+
+			<x3d width="600px" height="400px">
+				<scene>
+					<SphereSensor DEF="sphereSensor" autoOffset="true"></SphereSensor>
+
+					<!-- Sphere -->
+					<Transform>
+						<Shape>
+							<Appearance>
+								<Material diffuseColor="0 0 1"></Material>
+							</Appearance>
+							<Sphere></Sphere>
+						</Shape>
+					</Transform>
+
+					<!-- Cube -->
+					<Transform DEF="cubeTrafo" translation="3 0 0">
+						<Shape>
+							<Appearance>
+								<MovieTexture url='"video.mp4"' loop="true" startTime="0"></MovieTexture>
+							</Appearance>
+							<Box></Box>
+						</Shape>
+					</Transform>
+
+					<ROUTE
+						fromNode="sphereSensor"
+						fromField="rotation_changed"
+						toNode="cubeTrafo"
+						toField="rotation"
+					></ROUTE>
+				</scene>
+			</x3d>
+		</div>
+
+		<!-- ===================================================== -->
+		<div class="section">
+			<h2>Μέρος 2: Παιδική Υδρόγειος (Περιστροφή)</h2>
+
+			<x3d width="600px" height="400px">
+				<scene>
+					<CylinderSensor DEF="globeSensor" autoOffset="true"></CylinderSensor>
+
+					<Transform DEF="globeTrafo">
+						<Shape>
+							<Appearance>
+								<ImageTexture url='"earth.jpg"'></ImageTexture>
+							</Appearance>
+							<Sphere radius="2"></Sphere>
+						</Shape>
+					</Transform>
+
+					<ROUTE
+						fromNode="globeSensor"
+						fromField="rotation_changed"
+						toNode="globeTrafo"
+						toField="rotation"
+					></ROUTE>
+				</scene>
+			</x3d>
+		</div>
+
+		<!-- ===================================================== -->
+		<div class="section">
+			<h2>Μέρος 3: Επιλογή Σημείου & Πληροφορίες Ηπείρου</h2>
+
+			<x3d width="600px" height="400px">
+				<scene>
+					<Group onclick="pickContinent(event)">
+						<Transform>
+							<Shape>
+								<Appearance>
+									<ImageTexture url='"earth.jpg"'></ImageTexture>
+								</Appearance>
+								<Sphere radius="2"></Sphere>
+							</Shape>
+						</Transform>
+					</Group>
+				</scene>
+			</x3d>
+
+			<p><b>Επιλεγμένη Ήπειρος:</b> <span id="continent">-</span></p>
+		</div>
+	</body>
+</html>
