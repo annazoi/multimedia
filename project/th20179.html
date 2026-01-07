@@ -18,12 +18,39 @@
 
 		<script>
 			function pickContinent(event) {
+				let x = event.hitPnt[0];
 				let y = event.hitPnt[1];
 				let result = '';
 
-				if (y > 1) result = 'Ευρώπη / Βόρεια Αμερική';
-				else if (y > 0) result = 'Αφρική';
-				else result = 'Νότια Αμερική / Αυστραλία';
+				// ΠΟΛΟΙ
+				if (y > 1.6) {
+					result = 'Βόρειος Πόλος';
+				} else if (y < -1.6) {
+					result = 'Νότιος Πόλος';
+				}
+
+				// ΒΟΡΕΙΟ ΗΜΙΣΦΑΙΡΙΟ
+				else if (y > 1) {
+					if (x < 0) result = 'Βόρεια Αμερική';
+					else result = 'Ευρώπη';
+				}
+
+				// ΙΣΗΜΕΡΙΝΟΣ
+				else if (y > 0.2) {
+					if (x < 0) result = 'Κεντρική Αμερική';
+					else result = 'Αφρική';
+				}
+
+				// ΝΟΤΙΟ ΗΜΙΣΦΑΙΡΙΟ
+				else if (y > -0.8) {
+					if (x > 0) result = 'Ασία / Ωκεανία';
+					else result = 'Νότια Αμερική';
+				}
+
+				// ΚΑΤΩ ΑΚΡΟ
+				else {
+					result = 'Αυστραλία';
+				}
 
 				document.getElementById('continent').innerHTML = result;
 			}
